@@ -1,0 +1,17 @@
+# API key
+scrape_reviews.py
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Model files
+saved_models/
+
+# Dataset
+dataset/
+venv/
+__pycache__/
+*.pyc
+.streamlit/
