@@ -6,12 +6,6 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Model files
-saved_models/
-
-# Dataset
-dataset/
+# Environment & Streamlit
 venv/
-__pycache__/
-*.pyc
 .streamlit/
