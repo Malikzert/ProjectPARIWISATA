@@ -5,6 +5,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score
+from imblearn.over_sampling import SMOTE
 from core.preprocessing import clean_text
 
 EMOSI_MAP = {
@@ -38,7 +39,7 @@ df[TEXT_COL] = df[TEXT_COL].fillna('').astype(str)
 df[TEXT_COL] = df[TEXT_COL].apply(clean_text)
 
 df['sentimen_3kelas'] = df[LABEL_COL].map(EMOSI_MAP).fillna('NETRAL')
-print("Label distribution (3 kelas):")
+print("\nLabel distribution (3 kelas) BEFORE SMOTE:")
 print(df['sentimen_3kelas'].value_counts())
 
 X = df[TEXT_COL]
@@ -52,9 +53,16 @@ vectorizer = TfidfVectorizer(max_features=5000)
 X_train_vec = vectorizer.fit_transform(X_train)
 X_test_vec = vectorizer.transform(X_test)
 
+print(f"\nShape sebelum SMOTE: {X_train_vec.shape}")
+smote = SMOTE(random_state=42)
+X_train_resampled, y_train_resampled = smote.fit_resample(X_train_vec, y_train)
+print(f"Shape setelah SMOTE:  {X_train_resampled.shape}")
+print("\nLabel distribution AFTER SMOTE:")
+print(y_train_resampled.value_counts())
+
 print(f"\nTraining SVM (kernel=linear, probability=True)...")
 model = SVC(kernel='linear', probability=True, random_state=42)
-model.fit(X_train_vec, y_train)
+model.fit(X_train_resampled, y_train_resampled)
 
 y_pred = model.predict(X_test_vec)
 accuracy = accuracy_score(y_test, y_pred)

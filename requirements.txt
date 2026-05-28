@@ -5,3 +5,5 @@ matplotlib>=3.7.0
 wordcloud>=1.9.0
 openpyxl>=3.1.0
 google-search-results>=2.4.0
+Sastrawi>=1.0.1
+imbalanced-learn>=0.12.0
